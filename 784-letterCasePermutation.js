@@ -5,7 +5,12 @@ var letterCasePermutation = function (s) {
 
         // base case 
         if (i === s.length) {
-            return result.push(temp.join(''));
+            {
+                result.push(temp.join(''));
+                console.log('BASE CASE PUSH TO RESULT : ' + temp);
+                return;
+            } 
+                
         }
 
         // dfs recursive case
@@ -14,7 +19,9 @@ var letterCasePermutation = function (s) {
         // Found a number
         if (char.charCodeAt(0) < 64) {
             temp.push(char);
+            console.log('Number case    ' + temp)
             dfs(i + 1, s, temp);
+            console.log("🎉 @NubmerCase");
             temp.pop(); // <- Get back
         }
 
@@ -22,12 +29,16 @@ var letterCasePermutation = function (s) {
         else if (char.charCodeAt(0) > 64 && char.charCodeAt(0) < 123) {
             // UPPERCASE
             temp.push(char.toUpperCase());
+            console.log('UPPERCASE      ' + temp)
             dfs(i + 1, s, temp);
             temp.pop();
+            console.log("🎉 @UPPERCASE");
 
             // LOWERCASE
             temp.push(char.toLowerCase());
+            console.log('LOWERCASE      ' + temp)
             dfs(i + 1, s, temp);
+            console.log("🎉 @LOWERCASE");
             temp.pop();
         }
     }
