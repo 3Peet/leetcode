@@ -1,12 +1,12 @@
-const twoSum = function(nums, target) {
+const twoSum = function (nums, target) {
     const comp = {};
-    for(let i=0; i<nums.length; i++){
+    for (let i = 0; i < nums.length; i++) {
         console.log(comp)
-        console.log('comp[nums[i]] -> '+comp[nums[i]])
-        if(comp[nums[i] ]>=0){
-            return [ comp[nums[i] ]+1 , i+1]
+        console.log('comp[nums[i]] -> ' + comp[nums[i]])
+        if (comp[nums[i]] >= 0) {
+            return [comp[nums[i]] + 1, i + 1]
         }
-        comp[target-nums[i]] = i
+        comp[target - nums[i]] = i
     }
 };
 
