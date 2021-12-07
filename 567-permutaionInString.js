@@ -1,83 +1,45 @@
-// MY VERSIONS
-// var checkInclusion = function (s1, s2) {
-//     let i = 0;
-//     let j = 0;
-//     let arr = [];
-//     let obj1 = new Map();
-    
-//     for(let k=0;k<s1.length;k++){
-//         if(s1[k].charCodeAt(0) in obj1){
-//             obj1[s1[k].charCodeAt(0)]++;
-//         } else {
-//             obj1[s1[k].charCodeAt(0)] = 1;
-//         }
-//     }
-//     while (i < s2.length) {
-//         count = 0;
-//         let obj2 = new Map();
-//         // slide window
-//         if (i - j >= s1.length) {
-//             //remove
-//             arr.shift();
-//             j++;
-//         }
-//         arr.push(s2[i])
-//         i++;
-//         for(let k=0;k<arr.length;k++){
-//             if(arr[k].charCodeAt(0) in obj2){
-//                 obj2[arr[k].charCodeAt(0)]++;
-//             } else {
-//                 obj2[arr[k].charCodeAt(0)] = 1;
-//             }
-//         }
-//         // console.log(obj2)
-//         let allGood = 0;
+// idea
+// 1. create 2 arrays to compare character in substring
+// 2. fill 2 arrays with s1 value (cuz s1 is checker)
+// 3. sliding window with s1.length is window range
+// 4. compare every step of sliding 
 
-//         for(prop in obj1) {
-//             if (obj1[prop] !== obj2[prop]) {
-//                 break
-//             }
-//             allGood += obj1[prop]
-//         }
-//         // console.log(allGood)
-//         if (allGood === s1.length) {
-//             return true
-//         }
-//     }
-//     return false;
-// }
-var checkInclusion = function(s1, s2) {
-    if (s1.length > s2.length) {
-        return false
-    }
-    
-    const s1map = {}
+
+var checkInclusion = function (s1, s2) {
+    if (s1.length > s2.length || s2.length === 0) return false;
+    if (s1.length === 0) return true;
+
+    let baseCharCode = 'a'.charCodeAt(0);
+    let s1map = Array(26).fill(0);
+    let s2map = Array(26).fill(0);
+
+    // start window at same value;
     for (let i = 0; i < s1.length; i++) {
-        let c = s1.charCodeAt(i)
-        s1map[c] = s1map[c] ? s1map[c] + 1 : 1
+        s1map[s1.charCodeAt(i) - baseCharCode] += 1;
+        s2map[s2.charCodeAt(i) - baseCharCode] += 1;
     }
-    
-    for (let i = 0; i <= s2.length - s1.length; i++) {
-        const s2map = {}
 
-        for (let j = 0; j < s1.length; j++) {
-            let c = s2.charCodeAt(i + j)
-            s2map[c] = s2map[c] ? s2map[c] + 1 : 1
-        }
-        
-        let allGood = 0
-        for (prop in s1map) {
-            if (s1map[prop] !== s2map[prop]) {
-                break
-            }
-            allGood += s1map[prop]
-        }
-        
-        if (allGood === s1.length) {
-            return true
-        }
+    // sliding window process
+    for (let i = 0; i < s2.length; i++) {
+        if (isEquals(s1map, s2map)) return true;
+
+        // sliding window here (2 steps)
+        // add next value
+        s2map[s2.charCodeAt(i + s1.length) - baseCharCode] += 1;
+        // remove old value
+        s2map[s2.charCodeAt(i) - baseCharCode] -= 1;
     }
-    
-    return false
-};
-console.log(checkInclusion('ab','ergfegab'))
+    return isEquals(s1map, s2map)
+
+
+    function isEquals(array1, array2) {
+        for (let i = 0; i < 26; i++) {
+            if (array1[i] !== array2[i]) {
+                return false
+            }
+        }
+        return true;
+    }
+
+}
+console.log(checkInclusion('ab', 'saabd'))
